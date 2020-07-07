@@ -67,13 +67,41 @@ router.post(
     if (githubusername) profileFields.githubusername = githubusername;
 
     if (skills) {
-      console.log(123);
-
       profileFields.skills = skills.split(',').map((skill) => skill.trim());
     }
-    console.log(profileFields);
 
-    res.send('hello');
+    //build social object
+    //we have to initialize it here otherwise it will throw an error if we for e.g. console.log(profileFields.social.twitter)
+    profileFields.social = {};
+    if (youtube) profileFields.social.youtube = youtube;
+    if (facebook) profileFields.social.facebook = facebook;
+    if (twitter) profileFields.social.twitter = twitter;
+    if (instagram) profileFields.social.instagram = instagram;
+    if (linkedin) profileFields.social.linkedin = linkedin;
+
+    try {
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      if (profile) {
+        //update
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        );
+
+        return res.json(profile);
+      }
+
+      //create profile
+
+      profile = new Profile(profileFields);
+      await profile.save();
+      res.json(profile);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send('server error');
+    }
   }
 );
 
