@@ -1,6 +1,0 @@
-{
-  "mongoURI": "mongodb+srv://Yazok123:Yazok123@devnetwork.yrtkj.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtSecret": "ihaveasecrettoken",
-  "githubClientId": "209a18c19768e93fc938",
-  "githubSecret": "1203e890e4dddbbec5d1727cf7f00066c41a6354"
-}
