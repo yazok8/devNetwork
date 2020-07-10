@@ -30,7 +30,6 @@ const postSechema = new Schema({
     {
       user: {
         type: Schema.Types.ObjectId,
-        ref: 'users',
       },
 
       text: {
