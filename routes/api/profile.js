@@ -5,6 +5,7 @@ const router = express.Router();
 const auth = require('../../middleware/auth');
 const Profile = require('../../models/profile-model');
 const User = require('../../models/users-model');
+const Post = require('../../models/post-model');
 const { check, validationResult } = require('express-validator');
 const { response } = require('express');
 
@@ -146,11 +147,13 @@ router.delete('/', auth, async (req, res) => {
   try {
     //remove user posts later
 
+    await Post.deleteMany({ user: req.user.id });
+
     //this will remove profile
-    await Profile.findOneAndDelete({ user: req.user.id });
+    await Profile.findOneAndRemove({ user: req.user.id });
 
     //remove user
-    await Profile.findOneAndDelete({ _id: req.user.id });
+    await User.findOneAndRemove({ _id: req.user.id });
 
     res.json({ msg: 'User Deleted' });
   } catch (err) {
@@ -201,7 +204,7 @@ router.put(
     try {
       const profile = await Profile.findOne({ user: req.user.id });
 
-      //we use unshit to push to the beginning of the array instead of the end.
+      //we use unshift to push to the beginning of the array instead of the end.
       profile.experience.unshift(newExp);
 
       await profile.save();
