@@ -7,12 +7,12 @@ import { deleteExperience } from '../../actions/profile';
 
 const Experience = ({ experience, deleteExperience }) => {
   const experiences = experience.map((exp) => (
-    <tr key={exp.id}>
+    <tr key={exp._id}>
       <td>{exp.company}</td>
       <td className="hide-sm">{exp.title}</td>
       <td>
         <Moment format="YYYY/MM/DD">{moment.utc(exp.from)}</Moment> -{' '}
-        {exp.to === null ? (
+        {!exp.to ? (
           'Now'
         ) : (
           <Moment format="YYYY/MM/DD">{moment.utc(exp.to)}</Moment>
