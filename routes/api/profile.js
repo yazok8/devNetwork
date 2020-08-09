@@ -329,7 +329,9 @@ router.get('/github/:username', (req, res) => {
       )}&
       client_secret=${config.get('githubSecret')}`,
       method: 'GET',
-      headers: { 'user-agent': 'node.js' },
+      headers: {
+        'user-agent': 'node.js',
+      },
     };
 
     request(options, (error, response, body) => {
@@ -338,7 +340,6 @@ router.get('/github/:username', (req, res) => {
       if (response.statusCode != 200) {
         return res.status(404).json({ msg: 'No github profile found' });
       }
-
       res.json(JSON.parse(body));
     });
   } catch (err) {
