@@ -40,7 +40,7 @@ const Login = ({ login, isAuthenticated }) => {
               name="email"
               placeholder="Email Address"
               value={email}
-              onChange={(e) => onChange(e)}
+              onChange={onChange}
               required
             />
           </div>
@@ -51,7 +51,7 @@ const Login = ({ login, isAuthenticated }) => {
               placeholder="Password"
               minLength="6"
               value={password}
-              onChange={(e) => onChange(e)}
+              onChange={onChange}
               required
             />
           </div>
@@ -64,14 +64,14 @@ const Login = ({ login, isAuthenticated }) => {
         </form>
 
         <p className="my-1">
-          Don't have an account? <Link to="/login">Sign Up</Link>
+          Don't have an account? <Link to="/register">Sign Up</Link>
         </p>
       </section>
     </Fragment>
   );
 };
 
-login.PropTypes = {
+Login.propTypes = {
   login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
 };

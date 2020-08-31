@@ -7,7 +7,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
-//@route   GET api/auth: Test route
+//@route   GET api/auth: private route
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
@@ -56,7 +56,7 @@ router.post(
       jwt.sign(
         payLoad,
         config.get('jwtSecret'),
-        { expiresIn: '5 days ' },
+        { expiresIn: '1d' },
         (err, token) => {
           if (err) throw err;
           res.json({ token });

@@ -67,7 +67,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
               type="password"
               name="password"
               placeholder="Password"
-              minlength="6"
+              minLength="6"
               value={password}
               onChange={(e) => onChange(e)}
             />
