@@ -38,6 +38,4 @@ const Routes = () => {
   );
 };
 
-Routes.propTypes = {};
-
 export default Routes;
