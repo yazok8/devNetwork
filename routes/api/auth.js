@@ -3,9 +3,11 @@ const router = express.Router()
 const auth = require('../../middleware/auth')
 const User = require('../../models/users-model')
 const jwt = require('jsonwebtoken')
-const config = require('config')
+const dotenv = require('dotenv')
 const { check, validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
+
+dotenv.config()
 
 //@route   GET api/auth: private route
 router.get('/', auth, async (req, res) => {
@@ -55,7 +57,7 @@ router.post(
 
       jwt.sign(
         payLoad,
-        config.get('jwtSecret'),
+        `${process.env.jwtSecret}`,
         { expiresIn: '1d' },
         (err, token) => {
           if (err) throw err

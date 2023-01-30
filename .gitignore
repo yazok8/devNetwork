@@ -1,7 +1,12 @@
-node_modules/
+/node_modules
 config/default.json
 
 config/production.json
 
+.env
 
 client/node_modules
+
+
+# Local Netlify folder
+.netlify

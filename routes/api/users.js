@@ -4,8 +4,11 @@ const User = require('../../models/users-model');
 const bcrypt = require('bcryptjs');
 const gravatar = require('gravatar');
 const jwt = require('jsonwebtoken');
-const config = require('config');
-const { check, validationResult } = require('express-validator');
+const dotenv = require('dotenv');
+
+dotenv.config()
+
+const { check, validationResult } = require('express-validator')
 
 //@route   post api/users: here we will register the user
 router.post(
@@ -58,7 +61,7 @@ router.post(
 
       jwt.sign(
         payLoad,
-        config.get('jwtSecret'),
+        `${process.env.jwtSecret}`,
         { expiresIn: '1d' },
         (err, token) => {
           if (err) throw err;

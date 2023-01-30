@@ -1,6 +1,6 @@
-const express = require('express')
-const request = require('request')
-const config = require('config')
+const express = require('express');
+const request = require('request');
+const dotenv = require('dotenv');
 const router = express.Router()
 const auth = require('../../middleware/auth')
 const Profile = require('../../models/profile-model')
@@ -8,6 +8,8 @@ const User = require('../../models/users-model')
 const Post = require('../../models/post-model')
 const { check, validationResult } = require('express-validator')
 const { response } = require('express')
+
+dotenv.config();
 
 //@route   GET api/profile/me: get current user profile private access
 router.get('/me', auth, async (req, res) => {
@@ -324,10 +326,8 @@ router.get('/github/:username', (req, res) => {
     const options = {
       uri: `https://api.github.com/users/${
         req.params.username
-      }/repos?per_page=5&sort=created:asc&client_id=${config.get(
-        'githubClientId'
-      )}&
-      client_secret=${config.get('githubSecret')}`,
+      }/repos?per_page=5&sort=created:asc&client_id=${process.env.githubClientId}&
+      client_secret=${process.env.githubSecret}`,
       method: 'GET',
       headers: {
         'user-agent': 'node.js',
