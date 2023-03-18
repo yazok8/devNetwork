@@ -14,7 +14,7 @@ import {
 
 export const getCurrentProfile = () => async (dispatch) => {
   try {
-    //this route is from the back-end routes/apil files
+    //this route is from the back-end routes/api files
     const res = await axios.get('/api/profile/me');
     dispatch({
       type: GET_PROFILE,

@@ -14,20 +14,21 @@ dotenv.config();
 //@route   GET api/profile/me: get current user profile private access
 router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({
-      user: req.user.id,
-    }).populate('user', ['name', 'avatar'])
+    const profile = await Profile.findOne({ user: req.user.id }).populate(
+      'user',
+      ['name', 'avatar']
+    );
+
     if (!profile) {
-      return res
-        .status(400)
-        .json({ message: 'there is no profile for this user' })
+      return res.status(400).json({ msg: 'There is no profile for this user' });
     }
-    res.json(profile)
+
+    res.json(profile);
   } catch (err) {
-    console.log(err.message)
-    res.status(500).send('server error')
+    console.error(err.message);
+    res.status(500).send('Server Error');
   }
-})
+});
 
 //@route   Post api/profile: this will create or update user profile
 

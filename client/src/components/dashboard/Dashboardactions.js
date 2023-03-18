@@ -1,9 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-export const Dashboardactions = () => {
+export const Dashboardactions = ({profile}) => {
+  const userId = profile?.user?._id;
+
   return (
     <div className="dash-button">
+     {userId && (
+        <Link to={`/profile/${userId}`} className="btn">
+          <i className="fas fa-user-circle text-primary"></i> View Profile
+        </Link>
+      )}
       <Link to="/edit-profile" className="btn">
         <i className="fas fa-user-circle text-primary"></i> Edit Profile
       </Link>
@@ -16,3 +23,4 @@ export const Dashboardactions = () => {
     </div>
   );
 };
+
