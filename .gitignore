@@ -5,6 +5,8 @@ config/production.json
 
 client/node_modules
 
+.env
 
 # Local Netlify folder
 .netlify
+.env
