@@ -10,3 +10,6 @@ client/node_modules
 # Local Netlify folder
 .netlify
 .env
+
+/package-lock.json
+package-lock.json/
