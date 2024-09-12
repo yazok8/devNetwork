@@ -26,51 +26,49 @@ router.post(
   '/',
   [
     check('email', 'Please include a valid email').isEmail(),
-    check('password', 'password is required').exists(),
+    check('password', 'Password is required').exists(),
   ],
   async (req, res) => {
-    const errors = validationResult(req)
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() })
+      return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body
+    const { email, password } = req.body;
 
     try {
-      let user = await User.findOne({ email })
+      let user = await User.findOne({ email });
       if (!user) {
-        res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] })
+        return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
 
-      //compare is a bcrypt method
-      const isMatch = await bcrypt.compare(password, user.password)
-
+      // Compare is a bcrypt method
+      const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] })
+        return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
       }
 
       const payLoad = {
         user: {
           id: user.id,
         },
-      }
+      };
 
       jwt.sign(
         payLoad,
         `${process.env.jwtSecret}`,
         { expiresIn: '1d' },
         (err, token) => {
-          if (err) throw err
-          res.json({ token })
+          if (err) throw err;
+          res.json({ token });
         }
-      )
+      );
     } catch (err) {
-      console.log(err.message)
-      res.status(500).send('server error')
+      console.log(err.message);
+      return res.status(500).send('Server error');
     }
-
-    //check if the user exists and get users avatar
   }
-)
+);
+
 
 module.exports = router
