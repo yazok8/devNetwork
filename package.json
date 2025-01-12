@@ -8,11 +8,15 @@
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up",
+    "docker:down": "docker-compose down",
+    "docker:restart": "docker-compose down && docker-compose up --build"
   },
   "author": "Yazan Kh",
   "license": "ISC",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.1",
@@ -20,10 +24,10 @@
     "express": "^4.17.1",
     "express-validator": "^6.6.0",
     "gravatar": "^1.8.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
-    "mongoose": "^5.9.21",
+    "mongoose": "^8.9.4",
     "redux": "^4.0.5",
     "request": "^2.88.2"
   },

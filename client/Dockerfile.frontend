@@ -1,0 +1,20 @@
+# client/Dockerfile.frontend
+
+# Use Node.js 16 LTS
+FROM node:16
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install frontend dependencies
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy frontend source code
+COPY . .
+
+# Expose React development server port
+EXPOSE 3000
+
+# Start the React development server
+CMD ["npm", "start"]

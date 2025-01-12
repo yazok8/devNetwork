@@ -1,0 +1,23 @@
+# server/Dockerfile.backend
+
+# Use Node.js 16 LTS (compatible with your project)
+FROM node:16
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install backend dependencies
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Install nodemon globally (optional but recommended)
+RUN npm install -g nodemon
+
+# Copy backend source code
+COPY . .
+
+# Expose backend port and debugging port
+EXPOSE 5000 9229
+
+# Start the backend server with nodemon
+CMD ["npm", "run", "server:dev"]

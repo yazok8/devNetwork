@@ -1,3 +1,5 @@
+//client/src/actions/auth.js
+
 import axios from 'axios';
 import {
   REGISTER_SUCCESS,

@@ -1,27 +1,23 @@
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './reducers/root-reducer';
 import setAuthToken from './utils/setauthtoken';
 
-const initialState = {
-};
+let currentState;
 
-const middleware = [thunk];
+// 1) Create the store using configureStore
+const store = configureStore({
+  reducer: rootReducer,
+  // Redux Toolkit has thunk by default. If you want to add more middleware, do:
+  // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(yourCustomMiddleware)
+});
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
-
-let currentState = store.getState();
+// 2) Keep the subscription logic if you want to track token changes
+currentState = store.getState();
 
 store.subscribe(() => {
-  // keep track of the previous and current state to compare changes
   let previousState = currentState;
   currentState = store.getState();
-  // if the token changes set the value in localStorage and axios headers
+
   if (previousState.auth.token !== currentState.auth.token) {
     const token = currentState.auth.token;
     setAuthToken(token);

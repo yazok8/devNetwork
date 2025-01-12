@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.21.1",
+    "axios": "^1.7.9",
     "i": "^0.3.6",
     "moment": "^2.27.0",
     "mpath": "^0.8.4",
@@ -15,11 +16,10 @@
     "react-moment": "^0.9.7",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.0.1",
-    "react-thunk": "^1.0.0",
+    "react-scripts": "^5.0.1",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0",
+    "redux-thunk": "^2.4.2",
     "uuid": "^8.2.0"
   },
   "scripts": {

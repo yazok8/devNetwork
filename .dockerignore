@@ -1,0 +1,22 @@
+# .dockerignore
+
+# Node modules
+node_modules
+
+# Logs
+npm-debug.log
+yarn-error.log
+
+# Docker files
+Dockerfile*
+.dockerignore
+
+# Git
+.git
+.gitignore
+
+# VS Code
+.vscode
+
+# Environment Variables
+.env
