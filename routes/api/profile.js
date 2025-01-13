@@ -24,9 +24,9 @@ router.get('/me', auth, async (req, res) => {
     }
 
     res.json(profile);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
   }
 });
 
@@ -37,8 +37,7 @@ router.post(
   [
     auth,
     [
-      check('status', 'status is required').not().isEmpty(),
-      check('skills', 'skills is required').not().notEmpty(),
+      check('status', 'status is required').not().isEmpty()
     ],
   ],
   async (req, res) => {
@@ -118,29 +117,30 @@ router.get('/', async (req, res) => {
   try {
     const profiles = await Profile.find().populate('user', ['name', 'avatar'])
     res.json(profiles)
-  } catch (err) {
-    console.log(err.message)
-    res.status(500).send('Server Error')
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).send('Server error')
   }
 })
 
 //@route   GET api/profile/user/:user_id: this will get  profiles by user ID Public Access
 router.get('/user/:user_id', async (req, res) => {
   try {
+    console.log(`Fetching profile for user_id: ${req.params.user_id}`);
     const profile = await Profile.findOne({
       user: req.params.user_id,
     }).populate('user', ['name', 'avatar'])
-    res.json(profile)
 
     if (!profile) {
       return res.status(400).json({ msg: 'Profile not found' })
     }
-  } catch (err) {
-    console.log(err.message)
-    if (err.kind == 'ObjectId') {
+    res.json(profile)
+  } catch (error) {
+    console.log(error.message)
+    if (error.kind == 'ObjectId') {
       return res.status(400).json({ msg: 'Profile not found' })
     }
-    res.status(500).send('Server Error')
+    res.status(500).send('Server error')
   }
 })
 
@@ -159,9 +159,9 @@ router.delete('/', auth, async (req, res) => {
     await User.findOneAndRemove({ _id: req.user.id })
 
     res.json({ msg: 'User Deleted' })
-  } catch (err) {
-    console.log(err.message)
-    res.status(500).send('Server Error')
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).send('Server error')
   }
 })
 
@@ -212,9 +212,9 @@ router.put(
 
       await profile.save()
       res.json(profile)
-    } catch (err) {
-      console.log(err.message)
-      res.status(500).send('Server Error')
+    } catch (error) {
+      console.log(error.message)
+      res.status(500).send('Server error')
     }
   }
 )
@@ -236,9 +236,9 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
 
     await profile.save()
     res.json(profile)
-  } catch (err) {
-    console.log(err.message)
-    res.status(500).send('Server Error')
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).send('Server error')
   }
 })
 
@@ -290,9 +290,9 @@ router.put(
       await profile.save()
 
       res.json(profile)
-    } catch (err) {
-      console.error(err.message)
-      res.status(500).send('Server Error')
+    } catch (error) {
+      console.error(error.message)
+      res.status(500).send('Server error')
     }
   }
 )
@@ -308,15 +308,15 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
     //Get remove index
     const removeIndex = profile.education
       .map((item) => item.id)
-      .indexOf(req.params.exp_id)
+      .indexOf(req.params.edu_id)
 
     profile.education.splice(removeIndex, 1)
 
     await profile.save()
     res.json(profile)
-  } catch (err) {
-    console.log(err.message)
-    res.status(500).send('Server Error')
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).send('Server error')
   }
 })
 
@@ -343,9 +343,9 @@ router.get('/github/:username', (req, res) => {
       }
       res.json(JSON.parse(body))
     })
-  } catch (err) {
-    console.log(err.message)
-    res.status(500).send('')
+  } catch (error) {
+    console.log(error.message)
+    res.status(500).send('Server Error')
   }
 })
 
