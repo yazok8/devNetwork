@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getPosts } from '../../actions/post';
 import PostItem from './PostItem';
 import PostForm from './PostForm';
-import Spinner from '../layout/Spinner';
+import { Spinner }from '../layout/Spinner';
 
 const Posts = ({ getPosts, post: { posts, loading } }) => {
   useEffect(() => {

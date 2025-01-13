@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { Dashboardactions } from './Dashboardactions';
-import Spinner from '../layout/Spinner';
+import {Spinner} from '../layout/Spinner';
 import Experience from './Experience';
 import Education from './Education';
 
