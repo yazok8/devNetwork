@@ -35,5 +35,8 @@
   "devDependencies": {
     "concurrently": "^6.3.0",
     "nodemon": "^2.0.22"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
