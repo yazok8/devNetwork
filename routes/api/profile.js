@@ -2,12 +2,11 @@ const express = require('express');
 const request = require('request');
 const dotenv = require('dotenv');
 const router = express.Router()
-const auth = require('../../middleware/auth')
+const auth  = require('../../middleware/auth')
 const Profile = require('../../models/profile-model')
 const User = require('../../models/users-model')
 const Post = require('../../models/post-model')
 const { check, validationResult } = require('express-validator')
-const { response } = require('express')
 
 dotenv.config();
 
@@ -43,7 +42,7 @@ router.post(
   async (req, res) => {
     const error = validationResult(req)
     if (!error.isEmpty()) {
-      res.status(400).json({ errors: error.array() })
+      return res.status(400).json({ errors: error.array() })
     }
 
     const {

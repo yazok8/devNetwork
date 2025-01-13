@@ -1,6 +1,7 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const path = require('path');
+const errorHandler = require('./middleware/errorHandler')
 
 const app = express();
 
@@ -25,6 +26,10 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
+
+
+// Error Handling Middleware (should be after all other middleware and routes)
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

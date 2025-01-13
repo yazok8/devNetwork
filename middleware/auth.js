@@ -1,9 +1,11 @@
+// middleware/auth.js
+
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
-dotenv.config()
+dotenv.config();
 
-module.exports = function (req, res, next) {
+function auth(req, res, next) {
   const token = req.header('x-auth-token');
 
   if (!token) {
@@ -11,11 +13,15 @@ module.exports = function (req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token,`${process.env.jwtSecret}`);
+    const decoded = jwt.verify(token, process.env.jwtSecret);
 
     req.user = decoded.user;
     next();
   } catch (err) {
     res.status(401).json({ msg: 'Token is not valid' });
   }
-};
+}
+
+
+
+module.exports = auth;
