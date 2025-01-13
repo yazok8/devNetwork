@@ -9,14 +9,16 @@ const bcrypt = require('bcryptjs')
 
 dotenv.config()
 
-//@route   GET api/auth: private route
+// @route   GET api/auth
+// @desc    Get user by token
+// @access  Private
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password')
     res.json(user)
-  } catch (error) {
-    console.log(err.message)
-    res.status(500).send('Server Error')
+  }catch (error) { // Correct variable name
+    console.log(error.message); // Use 'error' instead of 'err'
+    res.status(500).send('Server Error');
   }
 })
 

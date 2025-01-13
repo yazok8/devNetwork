@@ -1,6 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import setAuthToken from './utils/setauthtoken';
+import { loadUser } from './actions/auth';
+import store from './store';
+
+if (localStorage.token) {
+    setAuthToken(localStorage.token);
+    store.dispatch(loadUser());
+  }
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

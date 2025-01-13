@@ -52,3 +52,7 @@ volumes:
     driver: local
   node_modules_frontend:
     driver: local
+
+networks:
+  devnetwork:
+    driver: bridge

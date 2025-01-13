@@ -1,3 +1,5 @@
+//client/src/components/auth/Login.js
+
 import React, { Fragment, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -28,7 +30,7 @@ const Login = ({ login, isAuthenticated }) => {
   return (
     <Fragment>
       <section className="container">
-        <h1 className="large text-primary">Sign Ip</h1>
+        <h1 className="large text-primary">Sign In</h1>
 
         <p className="lead">
           <i className="fas fa-user"></i> Sign into your account
