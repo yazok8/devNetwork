@@ -10,105 +10,107 @@ const { check, validationResult } = require('express-validator')
 
 dotenv.config();
 
-//@route   GET api/profile/me: get current user profile private access
+// @route   GET api/profile/me
+// @desc    Get current user's profile
+// @access  Private
 router.get('/me', auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id }).populate(
-      'user',
-      ['name', 'avatar']
-    );
+    // Add debugging logs
+    console.log('User ID from token:', req.user.id);
+    
+    const profile = await Profile.findOne({ 
+      user: req.user.id 
+    }).populate('user', ['name', 'avatar']);
+    
+    console.log('Found profile:', profile);
 
     if (!profile) {
-      return res.status(400).json({ msg: 'There is no profile for this user' });
+      // Instead of sending 400, send 404 with a message
+      return res.status(404).json({ 
+        msg: 'Profile not found. Please create a profile first.' 
+      });
     }
 
     res.json(profile);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send('Server error');
+  } catch (err) {
+    console.error('Profile fetch error:', err);
+    res.status(500).send('Server Error');
   }
 });
 
 //@route   Post api/profile: this will create or update user profile
 
-router.post(
-  '/',
-  [
-    auth,
-    [
-      check('status', 'status is required').not().isEmpty()
-    ],
-  ],
-  async (req, res) => {
-    const error = validationResult(req)
-    if (!error.isEmpty()) {
-      return res.status(400).json({ errors: error.array() })
-    }
-
-    const {
-      company,
-      website,
-      location,
-      bio,
-      status,
-      githubusername,
-      skills,
-      youtube,
-      facebook,
-      twitter,
-      instagram,
-      linkedin,
-    } = req.body
-
-    //build profile project
-    const profileFields = {}
-
-    profileFields.user = req.user.id
-    if (company) profileFields.company = company
-    if (website) profileFields.website = website
-    if (location) profileFields.location = location
-    if (bio) profileFields.bio = bio
-    if (status) profileFields.status = status
-    if (githubusername) profileFields.githubusername = githubusername
-
-    if (skills) {
-      profileFields.skills = skills.split(',').map((skill) => skill.trim())
-    }
-
-    //build social object
-    //we have to initialize it here otherwise it will throw an error if we for e.g. console.log(profileFields.social.twitter)
-    profileFields.social = {}
-    if (youtube) profileFields.social.youtube = youtube
-    if (facebook) profileFields.social.facebook = facebook
-    if (twitter) profileFields.social.twitter = twitter
-    if (instagram) profileFields.social.instagram = instagram
-    if (linkedin) profileFields.social.linkedin = linkedin
-
-    try {
-      let profile = await Profile.findOne({ user: req.user.id })
-
-      if (profile) {
-        //update
-        profile = await Profile.findOneAndUpdate(
-          { user: req.user.id },
-          { $set: profileFields },
-          { new: true }
-        )
-
-        return res.json(profile)
-      }
-
-      //create profile
-
-      profile = new Profile(profileFields)
-      await profile.save()
-      res.json(profile)
-    } catch (error) {
-      console.log(error.message)
-      res.status(500).send('server error')
-    }
+// @route   POST api/profile
+// @desc    Create or update user profile
+// @access  Private
+router.post('/', [auth, [
+  check('status', 'Status is required').not().isEmpty(),
+  check('skills', 'Skills is required').not().isEmpty()
+]], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
-)
+
+  const {
+    company,
+    website,
+    location,
+    bio,
+    status,
+    githubusername,
+    skills,
+    youtube,
+    facebook,
+    twitter,
+    instagram,
+    linkedin
+  } = req.body;
+
+  // Build profile object
+  const profileFields = {
+    user: req.user.id,
+    company,
+    website,
+    location,
+    bio,
+    status,
+    githubusername,
+    skills: Array.isArray(skills) 
+      ? skills 
+      : skills.split(',').map(skill => skill.trim()),
+    social: {
+      youtube,
+      twitter,
+      facebook,
+      linkedin,
+      instagram
+    }
+  };
+
+  try {
+    let profile = await Profile.findOne({ user: req.user.id });
+    
+    if (profile) {
+      // Update
+      profile = await Profile.findOneAndUpdate(
+        { user: req.user.id },
+        { $set: profileFields },
+        { new: true }
+      );
+      return res.json(profile);
+    }
+
+    // Create
+    profile = new Profile(profileFields);
+    await profile.save();
+    res.json(profile);
+  } catch (err) {
+    console.error('Profile creation error:', err);
+    res.status(500).send('Server Error');
+  }
+});
+
 
 //@route   GET api/profile: this will get all profiles.
 
@@ -326,8 +328,8 @@ router.get('/github/:username', (req, res) => {
     const options = {
       uri: `https://api.github.com/users/${
         req.params.username
-      }/repos?per_page=5&sort=created:asc&client_id=${process.env.githubClientId}&
-      client_secret=${process.env.githubSecret}`,
+      }/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_CLIENT_ID}&
+      client_secret=${process.env.GITHUB_SECRET}`,
       method: 'GET',
       headers: {
         'user-agent': 'node.js',

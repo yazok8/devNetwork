@@ -1,13 +1,59 @@
-import globals from "globals";
+// eslint.config.mjs
+
 import pluginJs from "@eslint/js";
 import pluginReact from "eslint-plugin-react";
 
-
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  {files: ["**/*.{js,mjs,cjs,jsx}"]},
-  {files: ["**/*.js"], languageOptions: {sourceType: "commonjs"}},
-  {languageOptions: { globals: globals.browser }},
-  pluginJs.configs.recommended,
-  pluginReact.configs.flat.recommended,
+  // Configuration for Server-Side (Node.js) Code
+  {
+    files: ["**/*.js", "**/*.cjs"], // Adjust the patterns as needed
+    languageOptions: {
+      sourceType: "commonjs",
+      globals: {
+        __dirname: "readonly",
+        __filename: "readonly",
+      },
+    },
+    plugins: {
+      react: pluginReact,
+    },
+    rules: {
+      // Add or override rules specific to server-side
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    env: {
+      node: true,   // Enable Node.js global variables
+      es6: true,    // Enable ES6 features
+    },
+    ...pluginJs.configs.recommended, // Apply recommended settings from @eslint/js
+  },
+
+  // Configuration for Client-Side (Browser) Code (Optional)
+  {
+    files: ["**/*.jsx", "**/*.mjs"], // Adjust the patterns as needed
+    languageOptions: {
+      sourceType: "module",
+    },
+    plugins: {
+      react: pluginReact,
+    },
+    rules: {
+      // Add or override rules specific to client-side
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    env: {
+      browser: true, // Enable browser global variables
+      es6: true,     // Enable ES6 features
+    },
+    ...pluginReact.configs.flat.recommended, // Apply recommended settings from eslint-plugin-react
+  },
 ];

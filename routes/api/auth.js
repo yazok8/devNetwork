@@ -58,11 +58,21 @@ router.post(
 
       jwt.sign(
         payLoad,
-        `${process.env.jwtSecret}`,
-        { expiresIn: '1d' },
-        (err, token) => {
+        process.env.JWT_SECRET,
+        { expiresIn: '15m' },
+        (err, token) => { // Use 'token' here instead of 'accessToken'
           if (err) throw err;
-          res.json({ token });
+          jwt.sign(
+            payLoad,
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' },
+            (err, refreshToken) => {
+              if (err) throw err;
+              res
+                .cookie('refreshToken', refreshToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' })
+                .json({ token }); // Return token with key "token"
+            }
+          );
         }
       );
     } catch (err) {
@@ -71,6 +81,39 @@ router.post(
     }
   }
 );
+
+// @route   POST api/auth/refresh
+// @desc    Refresh access token
+// @access  Public
+router.post('/refresh', (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({ msg: 'No refresh token, authorization denied' });
+  }
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+    const payload = {
+      user: {
+        id: decoded.user.id,
+      },
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' },
+      (err, accessToken) => {
+        if (err) throw err;
+        res.json({ accessToken });
+      }
+    );
+  } catch (err) {
+    res.status(401).json({ msg: 'Invalid refresh token' });
+  }
+});
+
 
 
 module.exports = router

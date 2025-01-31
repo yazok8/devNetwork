@@ -8,7 +8,7 @@ import './App.css';
 //Redux
 import { Provider } from 'react-redux';
 import store from './store';
-import setAuthToken from './utils/setauthtoken';
+import setAuthToken from './utils/setAuthToken';
 import { loadUser } from './actions/auth';
 
 if (localStorage.token) {

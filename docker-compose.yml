@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.backend
     ports:
       - "5000:5000"
-      - "9229:9229" # Optional: Debugging port for Node.js
+      - "9229:9229"
     environment:
       NODE_ENV: development
       MONGO_URI: ${MONGO_URI}
@@ -20,7 +20,12 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run server:dev # Ensure this script uses nodemon
+    command: npm run server:dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   frontend:
     build:
@@ -56,3 +61,6 @@ volumes:
 networks:
   devnetwork:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

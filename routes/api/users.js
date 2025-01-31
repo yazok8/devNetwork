@@ -61,7 +61,7 @@ router.post(
 
       jwt.sign(
         payLoad,
-        `${process.env.jwtSecret}`,
+        `${process.env.JWT_SECRET}`,
         { expiresIn: '1d' },
         (err, token) => {
           if (err) throw err;
