@@ -11,7 +11,7 @@ export const Dashboardactions = ({profile}) => {
           <i className="fas fa-user-circle text-primary"></i> View Profile
         </Link>
       )}
-      <Link to="/edit-profile" className="btn">
+      <Link to="/edit-profile" className="btn" style={{marginBlock: '10px'}}>
         <i className="fas fa-user-circle text-primary"></i> Edit Profile
       </Link>
       <Link to="/add-experience" className="btn">
